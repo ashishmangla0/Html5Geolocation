@@ -46,7 +46,7 @@
       };
       const geo = getGeoLocation();
       const init = () => {
-        if (geo) {
+        if((geo = getGeoLocation())) {
           statusMessage.innerText = "HTML5 Geolocation is supported.";
         } else {
           statusMessage.innerText = "HTML5 Geolocation is not supported.";
