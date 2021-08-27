@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML5 Geolocation watchPosition</title>
+  </head>
+  <body>
+    <div class="" id="statusMessage"></div>
+    <div class="" id="disResults"></div>
+
+    <script>
+      const statusMessage = document.querySelector("#statusMessage");
+      const disResults = document.querySelector("#disResults");
+
+      const showCoords = (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        disResults.innerText = `lat:${lat} lon:${lon}`;
+      };
+
+      const geoError = (error) => {
+        const { code, message } = error;
+        //console.log(error.code); to get error code in number
+        const errroCode = {
+          1: "User denied Geolocation",
+          2: "Geolocation Position unavilable",
+          3: "Geolocation Timeout",
+        };
+        console.log(code, message);
+        alert(errroCode[error.code]);
+        //     console.log(errroCode[error.code]);
+      };
+      const geoOptions = {
+        timeout: 30000,
+        enableHighAccuracy: true,
+        maximumAge : 1000
+      };
+      const getGeoLocation = () => {
+        try {
+          if (!!navigator.geolocation) return navigator.geolocation;
+          else return undefined;
+        } catch (e) {
+          console.log(e);
+        }
+      };
+      const geo = getGeoLocation();
+      const init = () => {
+        if (geo) {
+          statusMessage.innerText = "HTML5 Geolocation is supported.";
+        } else {
+          statusMessage.innerText = "HTML5 Geolocation is not supported.";
+        }
+        geo.watchPosition(showCoords, geoError, geoOptions);
+      };
+
+      window.addEventListener("load", (event) => {
+        init();
+      });
+    </script>
+  </body>
+</html>
